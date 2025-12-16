@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <h1>Admin Login</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="text" id="login-username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <div id="login-error" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active" data-view="overview">
+                    📊 Overview
+                </a>
+                <a href="#" class="nav-link" data-view="messages">
+                    📧 Messages
+                    <span id="unread-badge" class="badge">0</span>
+                </a>
+                <a href="#" class="nav-link" data-view="projects">
+                    🚀 Projects
+                </a>
+                <a href="#" class="nav-link" id="logout-btn">
+                    🚪 Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <h1 id="view-title">Overview</h1>
+                <div class="user-info">
+                    <span id="admin-username"></span>
+                </div>
+            </div>
+
+            <!-- Overview View -->
+            <div id="overview-view" class="view active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-messages">0</h3>
+                            <p>Total Messages</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📬</div>
+                        <div class="stat-info">
+                            <h3 id="stat-unread-messages">0</h3>
+                            <p>Unread Messages</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚀</div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-projects">0</h3>
+                            <p>Total Projects</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-section">
+                    <h2>Recent Messages</h2>
+                    <div id="recent-messages" class="messages-list"></div>
+                </div>
+            </div>
+
+            <!-- Messages View -->
+            <div id="messages-view" class="view">
+                <div class="view-header">
+                    <h2>All Messages</h2>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="unread">Unread</button>
+                        <button class="filter-btn" data-filter="read">Read</button>
+                    </div>
+                </div>
+                <div id="all-messages" class="messages-list"></div>
+            </div>
+
+            <!-- Projects View -->
+            <div id="projects-view" class="view">
+                <div class="view-header">
+                    <h2>Projects</h2>
+                    <button id="add-project-btn" class="btn btn-primary">+ Add Project</button>
+                </div>
+                <div id="projects-list" class="projects-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Project Modal -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Project</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="project-form">
+                <input type="hidden" id="project-id">
+                
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="project-title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="project-description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Features (comma separated)</label>
+                    <input type="text" id="project-features" placeholder="🧾 Feature 1, 💰 Feature 2">
+                </div>
+                
+                <div class="form-group">
+                    <label>Technologies (comma separated) *</label>
+                    <input type="text" id="project-technologies" placeholder="HTML, CSS, JavaScript" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Live URL</label>
+                        <input type="url" id="project-live-url">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input type="url" id="project-github-url">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="project-featured">
+                            Featured Project
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="project-status">
+                            <option value="completed">Completed</option>
+                            <option value="in-progress">In Progress</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Message Detail Modal -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Message Details</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div id="message-detail" class="message-detail"></div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
